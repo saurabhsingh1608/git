@@ -24,7 +24,7 @@ env:
 
 jobs:
   
-  build:
+  deploy_to_thoughtspot:
     #if: ${{ github.event.label.name == 'approved' }} 
     if: github.event.pull_request.merged == true && contains(github.event.pull_request.labels.*.name, 'approved')  
     runs-on: ubuntu-latest
