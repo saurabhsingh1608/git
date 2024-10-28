@@ -1,0 +1,76 @@
+guid: d215632e-63ee-4e8b-a923-857e1ee5f3e7
+worksheet:
+  name: airbnb
+  tables:
+  - name: DIM_LISTING_W_HOSTS
+    fqn: 39c238ec-0a1d-48d5-8d0f-d2bf30559ecc
+  - name: FCT_REVIEWS
+    fqn: 8989567a-0f18-4e88-b833-5e527da70979
+  joins:
+  - name: FCT_REVIEWS_to_DIM_LISTING_W_HOSTS
+    source: DIM_LISTING_W_HOSTS
+    destination: FCT_REVIEWS
+    type: INNER
+    is_one_to_one: false
+  table_paths:
+  - id: DIM_LISTING_W_HOSTS_1
+    table: DIM_LISTING_W_HOSTS
+    join_path:
+    - {}
+  - id: FCT_REVIEWS_1
+    table: FCT_REVIEWS
+    join_path:
+    - join:
+      - FCT_REVIEWS_to_DIM_LISTING_W_HOSTS
+  worksheet_columns:
+  - name: Price
+    column_id: DIM_LISTING_W_HOSTS_1::PRICE
+    properties:
+      column_type: MEASURE
+      aggregation: SUM
+      index_type: DONT_INDEX
+  - name: Listing Id
+    column_id: DIM_LISTING_W_HOSTS_1::LISTING_ID
+    properties:
+      column_type: MEASURE
+      aggregation: SUM
+      index_type: DONT_INDEX
+  - name: Listing Name
+    column_id: DIM_LISTING_W_HOSTS_1::LISTING_NAME
+    properties:
+      column_type: ATTRIBUTE
+      index_type: DONT_INDEX
+  - name: Room Type
+    column_id: DIM_LISTING_W_HOSTS_1::ROOM_TYPE
+    properties:
+      column_type: ATTRIBUTE
+      index_type: DONT_INDEX
+  - name: Minimum Nights
+    column_id: DIM_LISTING_W_HOSTS_1::MINIMUM_NIGHTS
+    properties:
+      column_type: MEASURE
+      aggregation: SUM
+      index_type: DONT_INDEX
+  - name: Host Is Superhost
+    column_id: DIM_LISTING_W_HOSTS_1::HOST_IS_SUPERHOST
+    properties:
+      column_type: ATTRIBUTE
+      index_type: DONT_INDEX
+  - name: Review Date
+    column_id: FCT_REVIEWS_1::REVIEW_DATE
+    properties:
+      column_type: ATTRIBUTE
+      index_type: DONT_INDEX
+  - name: Review Text
+    column_id: FCT_REVIEWS_1::REVIEW_TEXT
+    properties:
+      column_type: ATTRIBUTE
+      index_type: DONT_INDEX
+  - name: Review Sentiment
+    column_id: FCT_REVIEWS_1::REVIEW_SENTIMENT
+    properties:
+      column_type: ATTRIBUTE
+      index_type: DONT_INDEX
+  properties:
+    is_bypass_rls: false
+    join_progressive: true

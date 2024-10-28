@@ -1,0 +1,39 @@
+guid: 8989567a-0f18-4e88-b833-5e527da70979
+table:
+  name: FCT_REVIEWS
+  db: AIRBNB
+  schema: DEV
+  db_table: FCT_REVIEWS
+  connection:
+    name: dbt
+    fqn: 6341534c-8d82-4c40-b81e-207ad2657eaa
+  columns:
+  - name: LISTING_ID
+    db_column_name: LISTING_ID
+    properties:
+      column_type: MEASURE
+      aggregation: SUM
+      index_type: DONT_INDEX
+    db_column_properties:
+      data_type: INT64
+  - name: REVIEW_DATE
+    db_column_name: REVIEW_DATE
+    properties:
+      column_type: ATTRIBUTE
+      index_type: DONT_INDEX
+    db_column_properties:
+      data_type: DATE_TIME
+  - name: REVIEW_TEXT
+    db_column_name: REVIEW_TEXT
+    properties:
+      column_type: ATTRIBUTE
+      index_type: DONT_INDEX
+    db_column_properties:
+      data_type: VARCHAR
+  - name: REVIEW_SENTIMENT
+    db_column_name: REVIEW_SENTIMENT
+    properties:
+      column_type: ATTRIBUTE
+      index_type: DONT_INDEX
+    db_column_properties:
+      data_type: VARCHAR
