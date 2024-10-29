@@ -5,10 +5,11 @@ answer:
   - id: airbnb
     name: airbnb
     fqn: d215632e-63ee-4e8b-a923-857e1ee5f3e7
-  search_query: "[Price] [Host Is Superhost] [Listing Name]"
+  search_query: "[Price] [Host Is Superhost] [Listing Name] [Room Type]"
   answer_columns:
   - name: Host Is Superhost
   - name: Listing Name
+  - name: Room Type
   - name: Total Price
   table:
     table_columns:
@@ -16,11 +17,14 @@ answer:
       show_headline: false
     - column_id: Listing Name
       show_headline: false
+    - column_id: Room Type
+      show_headline: false
     - column_id: Total Price
       show_headline: false
     ordered_column_ids:
     - Host Is Superhost
     - Listing Name
+    - Room Type
     - Total Price
     client_state: ""
     client_state_v2: "{\"tableVizPropVersion\": \"V1\",\"orderedColumnIds\": [\"Listing Name\",\"Total Price\",\"Host Is Superhost\"]}"
@@ -29,12 +33,13 @@ answer:
     chart_columns:
     - column_id: Host Is Superhost
     - column_id: Listing Name
+    - column_id: Room Type
     - column_id: Total Price
     axis_configs:
     - x:
-      - Listing Name
+      - Room Type
       "y":
       - Total Price
     client_state: ""
-    client_state_v2: "{\"version\": \"V4DOT2\",\"chartProperties\": {\"responsiveLayoutPreference\": \"AUTO_OFF\",\"chartSpecific\": {\"pivotSummariesState\": {}}},\"columnProperties\": [{\"columnId\": \"Host Is Superhost\",\"columnProperty\": {}},{\"columnId\": \"Listing Name\",\"columnProperty\": {}},{\"columnId\": \"Total Price\",\"columnProperty\": {}}],\"axisProperties\": [{\"id\": \"5f707fbf-cf0a-4746-aade-123df072cdd9\",\"properties\": {\"axisType\": \"Y\",\"linkedColumns\": [\"Total Price\"],\"isOpposite\": false}},{\"id\": \"89d8c0dc-66e2-41da-a38b-dbe27f4c9c5d\",\"properties\": {\"axisType\": \"X\",\"linkedColumns\": [\"Listing Name\"]}}],\"systemSeriesColors\": [{\"serieName\": \"Total Price\",\"color\": \"#FCC838\"}]}"
+    client_state_v2: "{\"version\": \"V4DOT2\",\"chartProperties\": {\"responsiveLayoutPreference\": \"AUTO_OFF\",\"chartSpecific\": {\"pivotSummariesState\": {}}},\"columnProperties\": [{\"columnId\": \"Host Is Superhost\",\"columnProperty\": {}},{\"columnId\": \"Listing Name\",\"columnProperty\": {}},{\"columnId\": \"Total Price\",\"columnProperty\": {}},{\"columnId\": \"Room Type\",\"columnProperty\": {}}],\"axisProperties\": [{\"id\": \"deac8fed-f304-4a18-9def-d55c6b6fe1f8\",\"properties\": {\"axisType\": \"Y\",\"linkedColumns\": [\"Total Price\"],\"isOpposite\": false}},{\"id\": \"d747a85b-ff5e-4c10-95cc-8cc7be8eff31\",\"properties\": {\"axisType\": \"X\",\"linkedColumns\": [\"Room Type\"]}}],\"systemSeriesColors\": [{\"serieName\": \"Total Price\",\"color\": \"#FCC838\"}]}"
   display_mode: TABLE_MODE
