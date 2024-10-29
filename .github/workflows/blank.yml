@@ -42,5 +42,5 @@ jobs:
       - name: run the deploy command
         run: "cs_tools tools git branches commit --tag ready --comment test --org 1980614359 --config ENV:"
       
-      - name: removing tag 
-        run: "cs_tools tools archiver remove --delete-tag --tag testing --config ENV:"
+      #- name: removing tag 
+      #  run: "cs_tools tools archiver remove --delete-tag --tag testing --config ENV:"
