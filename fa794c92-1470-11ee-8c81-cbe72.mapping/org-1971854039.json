@@ -14,6 +14,11 @@
   "counter" : 0,
   "additionalMapping" : { }
 }, {
+  "originalGuid" : "6c330b05-8ce8-4533-b69c-4ac55117f2ca",
+  "mappedGuid" : "677dfe1d-fb06-4db6-bed6-1aedc7764a0a",
+  "counter" : 0,
+  "additionalMapping" : { }
+}, {
   "originalGuid" : "d215632e-63ee-4e8b-a923-857e1ee5f3e7",
   "mappedGuid" : "84755762-f5d9-471f-bd0b-799b176b62df",
   "counter" : 0,
@@ -26,6 +31,16 @@
 }, {
   "originalGuid" : "3cdb55da-774e-45db-91fe-47677ab7f6d6",
   "mappedGuid" : "0800e928-a0ff-464a-9714-031ab5bbe496",
+  "counter" : 0,
+  "additionalMapping" : { }
+}, {
+  "originalGuid" : "6da283c4-5e90-4c56-9699-bbfbad756545",
+  "mappedGuid" : "83fefedf-22cd-4b68-9a95-a3dadce19cff",
+  "counter" : 0,
+  "additionalMapping" : { }
+}, {
+  "originalGuid" : "45bbcd0e-da72-4fcd-876b-e0021716baac",
+  "mappedGuid" : "cb99534e-dd8d-4d2e-9b31-528f3f20d90e",
   "counter" : 0,
   "additionalMapping" : { }
 }, {
