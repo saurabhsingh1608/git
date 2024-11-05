@@ -1,0 +1,35 @@
+guid: d40e3434-7219-466c-9232-f1d180d7193b
+answer:
+  name: test05
+  tables:
+  - id: airbnb
+    name: airbnb
+    fqn: d215632e-63ee-4e8b-a923-857e1ee5f3e7
+  search_query: "[Room Type] [Listing Id]"
+  answer_columns:
+  - name: Room Type
+  - name: Total Listing Id
+  table:
+    table_columns:
+    - column_id: Room Type
+      show_headline: false
+    - column_id: Total Listing Id
+      show_headline: false
+    ordered_column_ids:
+    - Room Type
+    - Total Listing Id
+    client_state: ""
+    client_state_v2: "{\"tableVizPropVersion\": \"V1\"}"
+  chart:
+    type: COLUMN
+    chart_columns:
+    - column_id: Room Type
+    - column_id: Total Listing Id
+    axis_configs:
+    - x:
+      - Room Type
+      "y":
+      - Total Listing Id
+    client_state: ""
+    client_state_v2: "{\"version\": \"V4DOT2\",\"chartProperties\": {\"chartSpecific\": {\"pivotSummariesState\": {}}},\"columnProperties\": [{\"columnId\": \"Room Type\",\"columnProperty\": {}},{\"columnId\": \"Total Listing Id\",\"columnProperty\": {}}],\"axisProperties\": [{\"id\": \"ef82013f-9954-4364-b501-3f002dd3a04a\",\"properties\": {\"axisType\": \"Y\",\"linkedColumns\": [\"Total Listing Id\"],\"isOpposite\": false}},{\"id\": \"6ed73148-7e74-45b7-b38e-99833def8bf8\",\"properties\": {\"axisType\": \"X\",\"linkedColumns\": [\"Room Type\"]}}]}"
+  display_mode: TABLE_MODE
