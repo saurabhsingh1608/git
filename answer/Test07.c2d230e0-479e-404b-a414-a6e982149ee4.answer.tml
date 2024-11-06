@@ -5,31 +5,37 @@ answer:
   - id: airbnb
     name: airbnb
     fqn: d215632e-63ee-4e8b-a923-857e1ee5f3e7
-  search_query: "[Price] [Room Type]"
+  search_query: "[Price] [Room Type] [Listing Id]"
   answer_columns:
   - name: Room Type
+  - name: Total Listing Id
   - name: Total Price
   table:
     table_columns:
     - column_id: Room Type
+      show_headline: false
+    - column_id: Total Listing Id
       show_headline: false
     - column_id: Total Price
       show_headline: false
     ordered_column_ids:
     - Room Type
     - Total Price
+    - Total Listing Id
     client_state: ""
     client_state_v2: "{\"tableVizPropVersion\": \"V1\"}"
   chart:
     type: COLUMN
     chart_columns:
     - column_id: Room Type
+    - column_id: Total Listing Id
     - column_id: Total Price
     axis_configs:
     - x:
       - Room Type
       "y":
       - Total Price
+      - Total Listing Id
     client_state: ""
-    client_state_v2: "{\"version\": \"V4DOT2\",\"chartProperties\": {\"responsiveLayoutPreference\": \"AUTO_ON\",\"chartSpecific\": {\"pivotSummariesState\": {}}},\"columnProperties\": [{\"columnId\": \"Total Price\",\"columnProperty\": {}},{\"columnId\": \"Room Type\",\"columnProperty\": {}}],\"axisProperties\": [{\"id\": \"54670e35-5e72-455b-9cf3-88d8aeb134ce\",\"properties\": {\"axisType\": \"Y\",\"linkedColumns\": [\"Total Price\"],\"isOpposite\": false}},{\"id\": \"cb2d35a9-8fbb-4dc0-8502-ebb483f42d2e\",\"properties\": {\"axisType\": \"X\",\"linkedColumns\": [\"Room Type\"]}}],\"systemSeriesColors\": [{\"serieName\": \"Total Price\",\"color\": \"#48D1E0\"}]}"
+    client_state_v2: "{\"version\": \"V4DOT2\",\"chartProperties\": {\"responsiveLayoutPreference\": \"AUTO_ON\",\"chartSpecific\": {\"pivotSummariesState\": {}}},\"columnProperties\": [{\"columnId\": \"Total Price\",\"columnProperty\": {}},{\"columnId\": \"Room Type\",\"columnProperty\": {}},{\"columnId\": \"Total Listing Id\",\"columnProperty\": {}}],\"axisProperties\": [{\"id\": \"1c2d0f93-3a0a-4cb1-b0ce-5e25dbf4ca19\",\"properties\": {\"axisType\": \"Y\",\"linkedColumns\": [\"Total Price\"],\"isOpposite\": false}},{\"id\": \"72b39cd6-6ce1-4592-999d-760b67287fa3\",\"properties\": {\"axisType\": \"Y\",\"linkedColumns\": [\"Total Listing Id\"],\"isOpposite\": true}},{\"id\": \"3cad2aee-9cff-4d18-94b6-90ceb8c26810\",\"properties\": {\"axisType\": \"X\",\"linkedColumns\": [\"Room Type\"]}}],\"systemSeriesColors\": [{\"serieName\": \"Total Price\",\"color\": \"#48D1E0\"}]}"
   display_mode: TABLE_MODE
