@@ -1,17 +1,11 @@
-# This workflow will triage pull requests and apply a label based on the
-# paths that are modified in the pull request.
-#
-# To use this workflow, you will need to set up a .github/labeler.yml
-# file with configuration.  For more information, see:
-# https://github.com/actions/labeler
+# This workflow will triage after pull requests is merged to Prod Branch with Label "approved" 
 
-name: Labeler
+name: deploy_changes_to_thoughtspot
 
-#on:
-#  workflow_dispatch:
-#  pull_request:
-#    types: [ labeled ]
+# Control when Workflow will run
 on:
+  # Workflow get trigger after PR is merged to Prod branch
+  # REF: ....
   pull_request:
     types: [closed] 
 
@@ -19,20 +13,26 @@ env:
     CS_TOOLS_THOUGHTSPOT__URL: ${{ secrets.THOUGHTSPOT_URL }}
     CS_TOOLS_THOUGHTSPOT__USERNAME: ${{ secrets.THOUGHTSPOT_USERNAME }}
     CS_TOOLS_THOUGHTSPOT__SECRET_KEY: ${{ secrets.THOUGHTSPOT_SECRET_KEY }}
-    #CS_TOOLS_THOUGHTSPOT____DEFAULT_ORG: ${{ secrets.THOUGHTSPOT_DEFAULT_ORG }}
+
+    # Paramaters for commit command
+    GITHUB_BRANCH_NAME: produc
+    TS_DESTINATION_ORG_ID: 1971854039
     
 
 jobs:
   
   deploy_to_thoughtspot:
-    #if: ${{ github.event.label.name == 'approved' }} 
+  
+    # Command is checking if PR is merged and it is merged with approved label
+    # REF: ...
     if: github.event.pull_request.merged == true && contains(github.event.pull_request.labels.*.name, 'approved')  
     runs-on: ubuntu-latest
     steps:
-      - name: checking prod branch
+    
+      - name: checking ${{ env.GITHUB_BRANCH_NAME }} branch
         uses: actions/checkout@v4
         with:
-          ref: produc
+          ref: ${{ env.GITHUB_BRANCH_NAME }}
           
       - name: Set up Python 3.12
         uses: actions/setup-python@v4
@@ -42,8 +42,5 @@ jobs:
       - name: install cs_tools
         run: python -m pip install "cs_tools[cli] @ https://github.com/thoughtspot/cs_tools/archive/v1.5.10.zip"
 
-      - name: Install Pydantic-Setting requirements
-        run: python -m pip install pydantic-settings==2.5.2
-
       - name: run the deploy command
-        run: "cs_tools tools git branches deploy --org 1971854039 --branch-name produc --config ENV:"
+        run: "cs_tools tools git branches deploy --org ${{ env.TS_DESTINATION_ORG_ID }} --branch-name ${{ env.GITHUB_BRANCH_NAME }} --config ENV:"
