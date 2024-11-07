@@ -1,0 +1,47 @@
+# This workflow validate the sync between source and target environment 
+
+name: sync_test
+
+# Controls when the workflow will run
+on:
+  # Allow triggering action manually 
+  # REF: ...
+  workflow_dispatch:
+
+  # 
+  # REF: ...
+  push:
+    branches: [produc]
+  pull_request:
+    branches: [produc]
+
+env:
+    CS_TOOLS_THOUGHTSPOT__URL: ${{ secrets.THOUGHTSPOT_URL_DEV }}
+    CS_TOOLS_THOUGHTSPOT__USERNAME: ${{ secrets.THOUGHTSPOT_USERNAME_DEV }}
+    CS_TOOLS_THOUGHTSPOT__SECRET_KEY: ${{ secrets.THOUGHTSPOT_SECRET_KEY_DEV }}
+
+    # Paramaters for commit command
+    TS_SOURCE_BRANCH: "Saurabh Singh"
+    TS_DESTINATION_BRANCH: "GitDeployProd - Saurabh"
+
+    
+jobs:
+  
+  test_sync:  
+    runs-on: ubuntu-latest
+    steps:
+      - name: checking prod branch
+        uses: actions/checkout@v4
+        with:
+          ref: dev2
+          
+      - name: Set up Python 3.12
+        uses: actions/setup-python@v4
+        with:
+          python-version: 3.12
+
+      - name: install cs_tools
+        run: python -m pip install "cs_tools[cli] @ https://github.com/thoughtspot/cs_tools/archive/v1.5.10.zip"
+
+      - name: run the deploy command
+        run: "cs_tools tools git branches validate --source_branch ${{ env.TS_SOURCE_BRANCH }}  --target_branch ${{ env.TS_DESTINATION_BRANCH }} --config ENV:"
