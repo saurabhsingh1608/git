@@ -5,8 +5,11 @@ This repository contains the CI for ThoughtSpot.
 ## Getting Started
 
 ... steps to fork the repo
+
 ... add branch to map to thoughtspot orgs
+
 ... change to secrets (links to do this)
+
 ... changes to workflow_files
 
 # How to Use / Guides
