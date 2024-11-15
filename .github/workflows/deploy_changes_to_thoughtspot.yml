@@ -1,35 +1,38 @@
-# This workflow will triage after pull requests is merged to Prod Branch with Label "approved" 
-
 name: deploy_changes_to_thoughtspot
 
-# Control when Workflow will run
 on:
-  # Workflow get trigger after PR is merged to Prod branch
-  # REF: ....
+  # WORKFLOW GET TRIGGER AFTER PR IS MERGED TO PROD BRANCH.
+  #
+  # REF:
+  # - https://docs.github.com/en/actions/writing-workflows/choosing-when-your-workflow-runs/events-that-trigger-workflows#pull_request
   pull_request:
     types: [closed] 
 
-env:
-    CS_TOOLS_THOUGHTSPOT__URL: ${{ secrets.THOUGHTSPOT_URL }}
-    CS_TOOLS_THOUGHTSPOT__USERNAME: ${{ secrets.THOUGHTSPOT_USERNAME }}
-    CS_TOOLS_THOUGHTSPOT__SECRET_KEY: ${{ secrets.THOUGHTSPOT_SECRET_KEY }}
 
-    # Paramaters for commit command
-    GITHUB_BRANCH_NAME: produc
-    TS_DESTINATION_ORG_ID: 1971854039
-    
+env:
+  CS_TOOLS_THOUGHTSPOT__URL: ${{ secrets.THOUGHTSPOT_URL }}
+  CS_TOOLS_THOUGHTSPOT__USERNAME: ${{ secrets.THOUGHTSPOT_USERNAME }}
+  CS_TOOLS_THOUGHTSPOT__SECRET_KEY: ${{ secrets.THOUGHTSPOT_SECRET_KEY }}
+  
+  # PARAMETERS FOR THE DEPLOY COMMAND
+  CS_TOOLS_LIBRARY_VERSION: v1.5.10
+  GITHUB_BRANCH_NAME: produc
+  TS_DESTINATION_ORG_ID: 1971854039
+
 
 jobs:
-  
   deploy_to_thoughtspot:
-  
-    # Command is checking if PR is merged and it is merged with approved label
-    # REF: ...
-    if: github.event.pull_request.merged == true && contains(github.event.pull_request.labels.*.name, 'approved')  
+    # COMMAND IS CHECKING IF PR IS MERGED AND IT IS MERGED WITH APPROVED LABEL.
+    #
+    # REF:
+    # - https://docs.github.com/en/actions/writing-workflows/choosing-when-your-workflow-runs/using-conditions-to-control-job-execution
+    # - https://docs.github.com/en/actions/writing-workflows/choosing-what-your-workflow-does/evaluate-expressions-in-workflows-and-actions
+    if: github.event.pull_request.merged && contains(github.event.pull_request.labels.*.name, 'approved')
+
     runs-on: ubuntu-latest
     steps:
     
-      - name: checking ${{ env.GITHUB_BRANCH_NAME }} branch
+      - name: Checking out ${{ env.GITHUB_BRANCH_NAME }} Branch
         uses: actions/checkout@v4
         with:
           ref: ${{ env.GITHUB_BRANCH_NAME }}
@@ -39,8 +42,10 @@ jobs:
         with:
           python-version: 3.12
 
-      - name: install cs_tools
-        run: python -m pip install "cs_tools[cli] @ https://github.com/thoughtspot/cs_tools/archive/v1.5.10.zip"
+      - name: Install CS Tools ${{ env.CS_TOOLS_LIBRARY_VERSION }} (ThoughtSpot REST API wrapper)
+        run: python -m pip install "cs_tools[cli] @ https://github.com/thoughtspot/cs_tools/archive/${{ env.CS_TOOLS_LIBRARY_VERSION }}.zip"
 
-      - name: run the deploy command
+      # REF:
+      # - https://thoughtspot.github.io/cs_tools/tools/git/#__tabbed_3_6
+      - name: Deploy TML changes to Org ${{ env.TS_DESTINATION_ORG_ID }}
         run: "cs_tools tools git branches deploy --org ${{ env.TS_DESTINATION_ORG_ID }} --branch-name ${{ env.GITHUB_BRANCH_NAME }} --config ENV:"
