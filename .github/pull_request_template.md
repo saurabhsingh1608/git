@@ -1,13 +1,16 @@
-## Describe your changes 
+## What's changing?
 
-## Please add GUID of objects and its type ( ex. Liveboards, Answer, Worksheet etc ) 
 
-## From where this request came from and what changes we made in metadata
+## What's motivating this change?
+<sup><i>Link to any related Issues or Discussions for additional context.</i></sup>
 
-## Have we made any changes in snowflake layer for this request and we added those changes in TMF Org where we going to deploy this objects ?
 
-## Checklist before requesting a review
-- [x] I have performed a self-review of my changes
-- [x] If it is a new Vizs or Objects , I have gone thorough testing of data readiness.
-- [ ] Do we need to implement analytics?.
-- [ ] Will this be part of a product update? If yes, please write one phrase about this update.
+## Link to any related PRs for database changes that support this request.
+
+
+## [Optional] Additional comments
+
+
+## Review PR Checklist
+- [ ] I have performed a self-review of my changes.
+- [ ] If changes include new Visualizations, I have performed data quality and readiness testing.
