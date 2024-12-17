@@ -1,47 +1,38 @@
-# This workflow validate the sync between source and target environment 
+name: Validate Changes
 
-name: sync_test
-
-# Controls when the workflow will run
 on:
-  # Allow triggering action manually 
-  # REF: ...
-  workflow_dispatch:
-
-  # 
-  # REF: ...
-  push:
-    branches: [produc]
+  # ALLOW TRIGGERING ACTION ONLY SPECIFIC PRs
   pull_request:
-    branches: [produc]
+    paths:
+      - '.github/PULL_REQUEST_TEMPLATE/request_merge_thoughtspot_changes.md'
 
 env:
-    CS_TOOLS_THOUGHTSPOT__URL: ${{ secrets.THOUGHTSPOT_URL_DEV }}
-    CS_TOOLS_THOUGHTSPOT__USERNAME: ${{ secrets.THOUGHTSPOT_USERNAME_DEV }}
-    CS_TOOLS_THOUGHTSPOT__SECRET_KEY: ${{ secrets.THOUGHTSPOT_SECRET_KEY_DEV }}
+  # CS TOOLS IS COMMAND LINE LIBRARY WRAPPING TS APIS
+  # https://thoughtspot.github.io/cs_tools/tools/git/
+  CS_TOOLS_VERSION: v1.5.12
+  CS_TOOLS_THOUGHTSPOT__URL: ${{ secrets.THOUGHTSPOT_URL }}
+  CS_TOOLS_THOUGHTSPOT__USERNAME: ${{ secrets.THOUGHTSPOT_USERNAME }}
+  CS_TOOLS_THOUGHTSPOT__SECRET_KEY: ${{ secrets.THOUGHTSPOT_SECRET_KEY }}
 
-    # Paramaters for commit command
-    TS_SOURCE_BRANCH: "Saurabh Singh"
-    TS_DESTINATION_BRANCH: "GitDeployProd - Saurabh"
 
-    
 jobs:
-  
-  test_sync:  
+
+  run_validate_api:
     runs-on: ubuntu-latest
+
     steps:
-      - name: checking prod branch
+      - name: Checking out ${{ env.TS_ENV_NAME }} branch
         uses: actions/checkout@v4
         with:
-          ref: dev2
-          
-      - name: Set up Python 3.12
-        uses: actions/setup-python@v4
+          ref: ${{ env.TS_ENV_NAME }}
+      
+      - name: Set up Python
+        uses: actions/setup-python@v5
         with:
           python-version: 3.12
-
-      - name: install cs_tools
-        run: python -m pip install "cs_tools[cli] @ https://github.com/thoughtspot/cs_tools/archive/v1.5.10.zip"
+  
+      - name: Install CS Tools
+        run: pip install "cs_tools[cli] @ https://github.com/thoughtspot/cs_tools/archive/${{ env.CS_TOOLS_VERSION }}.zip"
 
       - name: run the deploy command
-        run: "cs_tools tools git branches validate --source_branch ${{ env.TS_SOURCE_BRANCH }}  --target_branch ${{ env.TS_DESTINATION_BRANCH }} --config ENV:"
+        run: "cs_tools tools git branches validate --source_branch ${{ github.head_ref }} --target_branch ${{ github.base_ref }} --config ENV:"
