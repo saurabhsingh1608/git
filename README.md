@@ -11,11 +11,11 @@ Manage your ThoughtSpot objects with the [__Verion Control APIs__](https://devel
 
 ## Which Secrets do I have to manage?
 
-__ThoughtSpot__ [requires an authenticated session](https://developers.thoughtspot.com/docs/api-authv2) in order to use the APIs.
+__ThoughtSpot__ [requires an authenticated session](https://developers.thoughtspot.com/docs/api-authv2) in order to use the APIs. Each of the workflows will ask for 3 secrets.
 
-  - `CS_TOOLS_THOUGHTSPOT__URL` - your ThoughtSpot URL (eg. https://company.thoughtspot.cloud)
-  - `CS_TOOLS_THOUGHTSPOT__USERNAME` - an Administrator-level username
-  - `CS_TOOLS_THOUGHTSPOT__SECRET_KEY` - your cluster-level ThoughtSpot [__secret key__](https://developers.thoughtspot.com/docs/trusted-auth-secret-key#_secret_key_overview)
+  - `THOUGHTSPOT_URL` - your ThoughtSpot URL (eg. https://company.thoughtspot.cloud)
+  - `THOUGHTSPOT_USERNAME` - an Administrator-level username
+  - `THOUGHTSPOT_SECRET_KEY` - your cluster-level ThoughtSpot [__secret key__](https://developers.thoughtspot.com/docs/trusted-auth-secret-key#_secret_key_overview)
 
 ## How to Use / Guides
 

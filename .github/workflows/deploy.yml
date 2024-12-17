@@ -1,51 +1,55 @@
-name: deploy_changes_to_thoughtspot
+name: Deploy Changes
 
 on:
-  # WORKFLOW GET TRIGGER AFTER PR IS MERGED TO PROD BRANCH.
-  #
-  # REF:
-  # - https://docs.github.com/en/actions/writing-workflows/choosing-when-your-workflow-runs/events-that-trigger-workflows#pull_request
+  # ALLOW TRIGGERING ACTION MANUALLY 
+  workflow_dispatch:
+
+  # AFTER PR IS MERGED / CLOSED
   pull_request:
     types: [closed] 
 
 
 env:
-  CS_TOOLS_THOUGHTSPOT__URL: ${{ secrets.THOUGHTSPOT_URL }}
-  CS_TOOLS_THOUGHTSPOT__USERNAME: ${{ secrets.THOUGHTSPOT_USERNAME }}
-  CS_TOOLS_THOUGHTSPOT__SECRET_KEY: ${{ secrets.THOUGHTSPOT_SECRET_KEY }}
-  
-  # PARAMETERS FOR THE DEPLOY COMMAND
-  CS_TOOLS_LIBRARY_VERSION: v1.5.10
-  GITHUB_BRANCH_NAME: produc
-  TS_DESTINATION_ORG_ID: 1971854039
+  # CS TOOLS IS COMMAND LINE LIBRARY WRAPPING TS APIS
+  # https://thoughtspot.github.io/cs_tools/tools/git/
+  CS_TOOLS_VERSION: v1.5.12
+  CS_TOOLS_THOUGHTSPOT__URL: ${{ secrets.THOUGHTSPOT_URL_DEV }}
+  CS_TOOLS_THOUGHTSPOT__USERNAME: ${{ secrets.THOUGHTSPOT_USERNAME_DEV }}
+  CS_TOOLS_THOUGHTSPOT__SECRET_KEY: ${{ secrets.THOUGHTSPOT_SECRET_KEY_DEV }}
+
+  # THE NAME OF YOUR GITHUB BRANCH / THOUGHTSPOT ENVIRONMENT.
+  TS_ENV_NAME: production
+  # THE ID OF THE ORG (THOUGHTSPOT ENVIRONMENT MATCHING THE TS_ENV_NAME).
+  TS_TARGET_ORG_ID: 123456789
 
 
 jobs:
-  deploy_to_thoughtspot:
+
+  run_deploy_api:
+    runs-on: ubuntu-latest
+
     # COMMAND IS CHECKING IF PR IS MERGED AND IT IS MERGED WITH APPROVED LABEL.
     #
     # REF:
     # - https://docs.github.com/en/actions/writing-workflows/choosing-when-your-workflow-runs/using-conditions-to-control-job-execution
     # - https://docs.github.com/en/actions/writing-workflows/choosing-what-your-workflow-does/evaluate-expressions-in-workflows-and-actions
-    if: github.event.pull_request.merged && contains(github.event.pull_request.labels.*.name, 'approved')
+    if: |
+      github.event.pull_request.merged == true &&
+      github.event.pull_request.reviews.*.state == 'APPROVED'
 
-    runs-on: ubuntu-latest
     steps:
-    
-      - name: Checking out ${{ env.GITHUB_BRANCH_NAME }} Branch
+      - name: Checking out ${{ env.TS_ENV_NAME }} branch
         uses: actions/checkout@v4
         with:
-          ref: ${{ env.GITHUB_BRANCH_NAME }}
-          
-      - name: Set up Python 3.12
-        uses: actions/setup-python@v4
+          ref: ${{ env.TS_ENV_NAME }}
+      
+      - name: Set up Python
+        uses: actions/setup-python@v5
         with:
           python-version: 3.12
+  
+      - name: Install CS Tools
+        run: pip install "cs_tools[cli] @ https://github.com/thoughtspot/cs_tools/archive/${{ env.CS_TOOLS_VERSION }}.zip"
 
-      - name: Install CS Tools ${{ env.CS_TOOLS_LIBRARY_VERSION }} (ThoughtSpot REST API wrapper)
-        run: python -m pip install "cs_tools[cli] @ https://github.com/thoughtspot/cs_tools/archive/${{ env.CS_TOOLS_LIBRARY_VERSION }}.zip"
-
-      # REF:
-      # - https://thoughtspot.github.io/cs_tools/tools/git/#__tabbed_3_6
-      - name: Deploy TML changes to Org ${{ env.TS_DESTINATION_ORG_ID }}
-        run: "cs_tools tools git branches deploy --org ${{ env.TS_DESTINATION_ORG_ID }} --branch-name ${{ env.GITHUB_BRANCH_NAME }} --config ENV:"
+      - name: Run the GIT DEPLOY command
+        run: "cs_tools tools git branches deploy --org ${{ env.TS_DESTINATION_ORG_ID }} --branch-name ${{ env.TS_ENV_NAME }} --config ENV:"
