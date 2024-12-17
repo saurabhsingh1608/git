@@ -1,0 +1,59 @@
+name: Fetch and Commit
+
+on:
+  # ALLOW TRIGGERING ACTION MANUALLY 
+  workflow_dispatch:
+
+  # ALLOW SCHEDULING THE JOB
+  # EVERY DAY AT 5:20 AM UTC
+  schedule:
+    - cron: "20 5 * * *"
+
+
+env:
+    # CS TOOLS IS COMMAND LINE LIBRARY WRAPPING TS APIS
+    # https://thoughtspot.github.io/cs_tools/tools/git/
+    CS_TOOLS_VERSION: v1.5.10
+    CS_TOOLS_THOUGHTSPOT__URL: ${{ secrets.THOUGHTSPOT_URL_DEV }}
+    CS_TOOLS_THOUGHTSPOT__USERNAME: ${{ secrets.THOUGHTSPOT_USERNAME_DEV }}
+    CS_TOOLS_THOUGHTSPOT__SECRET_KEY: ${{ secrets.THOUGHTSPOT_SECRET_KEY_DEV }}
+
+    # THE NAME OF YOUR BRANCH / THOUGHTSPOT ENVIRONMENT.
+    TS_ENV_NAME: develop
+    # THE ID OF THE ORG (THOUGHTSPOT ENVIRONMENT MATHCIN ENV_NAME).
+    TS_SOURCE_ORG_ID: 123456789
+    # THE NAME OF THE TAG MARKING YOUR OBJECTS AS VERSION CONTROLLED.
+    TS_OBJECT_TAG: version-controlled
+    # THE MESSAGE TO ATTACH TO THE GIT COMMIT COMMAND.
+    TS_COMMIT_MESSAGE: "AUTOMATED >> TS-CI '${{ github.workflow }}' @ ${{ github.event.repository.updated_at }}"
+
+
+jobs:
+
+  run_commit_api: 
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checking out ${{ env.TS_ENV_NAME }} branch
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ env.TS_ENV_NAME }}
+      
+      - name: Install uv
+        uses: astral-sh/setup-uv@v4
+        with:
+          version: "0.5.9"
+          enable-cache: true
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version-file: ".python-version"
+  
+      - name: Install CS Tools
+        run: uv pip install "cs_tools[cli] @ https://github.com/thoughtspot/cs_tools/archive/${{ env.CS_TOOLS_VERSION }}.zip"
+        env:
+          UV_SYSTEM_PYTHON: 1
+
+      - name: Run the GIT COMMIT command
+        run: "cs_tools tools git branches commit --tag ${{ env.TS_OBJECT_TAG }} --comment ${{ env.TS_COMMIT_MESSAGE }} --org ${{ env.TS_SOURCE_ORG_ID }} --config ENV:"
