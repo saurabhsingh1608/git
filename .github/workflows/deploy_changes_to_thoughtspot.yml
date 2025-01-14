@@ -6,6 +6,7 @@ name: deploy_changes_to_thoughtspot
 on:
   # Workflow get trigger after PR is merged to Prod branch
   # REF: ....
+  workflow_dispatch:
   pull_request:
     types: [closed] 
 
